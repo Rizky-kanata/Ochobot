@@ -1,11 +1,37 @@
+/* Menargetkan background seluruh halaman */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  
+  /* Path ke gambar di folder public */
+  background-image: linear-gradient(rgba(253, 245, 230, 0.8), rgba(253, 245, 230, 0.8)), 
+                    url('/library.jpg'); 
+  
+  /* Pengaturan agar gambar penuh dan tidak berulang */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Gambar tidak ikut scroll */
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+}
+
 .app {
+  width: 100%;
   max-width: 860px;
   margin: 0 auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  min-height: calc(100svh - 48px);
+  min-height: 100vh;
   gap: 1rem;
+  /* Membuat app tetap di atas background body */
+  position: relative; 
+  z-index: 1;
 }
+
 
 .brand-card {
   padding: 1.4rem 1.4rem 1.2rem;
@@ -23,8 +49,8 @@
   border-radius: 999px;
   padding: 0.35rem 0.75rem;
   margin-bottom: 1rem;
-  background: rgba(73, 97, 82, 0.1);
-  color: #496152;
+  background: #704214;
+  color: #fff;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -39,9 +65,21 @@
   flex-wrap: wrap;
 }
 
+.brand-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 60px;
+  height: px;
+  object-fit: contain;
+}
+
 .header h1 {
   margin: 0;
-  color: #253128;
+  color: #704214;
   font-family: "Palatino Linotype", "Book Antiqua", serif;
   font-size: clamp(2.25rem, 3vw, 3.1rem);
   letter-spacing: -0.03em;
@@ -57,7 +95,7 @@
 
 .clear-btn {
   padding: 0.7rem 1rem;
-  background: #b45f3b;
+  background: #a0522d;
   color: white;
   border: none;
   border-radius: 999px;
@@ -87,8 +125,7 @@
   padding: 0.7rem 0.95rem;
   border-radius: 999px;
   border: 1px solid rgba(73, 97, 82, 0.16);
-  background: rgba(255, 252, 247, 0.95);
-  color: #3e4b40;
+  background: #d2b48c;
   cursor: pointer;
   font-size: 0.92rem;
   transition:
@@ -100,7 +137,7 @@
 .prompt-chip:hover:not(:disabled) {
   transform: translateY(-1px);
   border-color: rgba(73, 97, 82, 0.35);
-  background: #fff;
+  box-shadow: 0 10px 20px rgba(243, 109, 51, 0.18);
 }
 
 .prompt-chip:disabled {
@@ -131,21 +168,21 @@
 }
 
 .message.user {
-  background: linear-gradient(135deg, #4d6b57, #3e5948);
+  background:#704214;
   color: white;
   margin-left: auto;
   border-bottom-right-radius: 6px;
 }
 
 .message.model {
-  background: rgba(255, 255, 255, 0.88);
-  color: #2c342f;
+  background: #c19a6b;
+  color: #020202;
   border: 1px solid rgba(89, 108, 94, 0.12);
   border-bottom-left-radius: 6px;
 }
 
 .message.welcome {
-  background: linear-gradient(135deg, rgba(250, 242, 221, 0.95), rgba(244, 234, 214, 0.92));
+  background: #c19a6b;
   border: 1px solid rgba(180, 95, 59, 0.18);
 }
 
@@ -180,7 +217,7 @@
 
 .chat-input button {
   padding: 0.9rem 1.35rem;
-  background: #496152;
+  background: #704214;
   color: white;
   border: none;
   border-radius: 16px;
@@ -194,7 +231,7 @@
 }
 
 .chat-input button:hover:not(:disabled) {
-  background: #3d5144;
+  background: #f09337;
   transform: translateY(-1px);
   box-shadow: 0 12px 24px rgba(73, 97, 82, 0.2);
 }

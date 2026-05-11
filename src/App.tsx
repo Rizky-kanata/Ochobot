@@ -37,9 +37,9 @@ function App() {
       <div className="brand-card">
         <span className="brand-badge">Custom AI Book Guide</span>
         <div className="header">
-          <div>
+          <div className="brand-title">
+            <img src="/lentera.jpg" alt="Logo Lentera" className="brand-logo" />
             <h1>{chatbotConfig.botName}</h1>
-            <p className="subtitle">{chatbotConfig.tagline}</p>
           </div>
           <button className="clear-btn" onClick={handleClear}>
             Chat Baru
