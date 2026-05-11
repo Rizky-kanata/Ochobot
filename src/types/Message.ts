@@ -7,4 +7,7 @@ export interface ChatConfig {
   systemInstruction: string;
   botName: string;
   welcomeMessage: string;
+  tagline: string;
+  inputPlaceholder: string;
+  quickPrompts: string[];
 }

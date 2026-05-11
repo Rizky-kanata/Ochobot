@@ -34,14 +34,37 @@ function App() {
 
   return (
     <div className="app">
-      <div className="header">
-        <h1>{chatbotConfig.botName}</h1>
-        <button className="clear-btn" onClick={handleClear}>
-          Chat Baru
-        </button>
+      <div className="brand-card">
+        <span className="brand-badge">Custom AI Book Guide</span>
+        <div className="header">
+          <div>
+            <h1>{chatbotConfig.botName}</h1>
+            <p className="subtitle">{chatbotConfig.tagline}</p>
+          </div>
+          <button className="clear-btn" onClick={handleClear}>
+            Chat Baru
+          </button>
+        </div>
+        <div className="quick-prompts" aria-label="Contoh prompt">
+          {chatbotConfig.quickPrompts.map((prompt) => (
+            <button
+              key={prompt}
+              type="button"
+              className="prompt-chip"
+              onClick={() => handleSend(prompt)}
+              disabled={isLoading}
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
       </div>
       <ChatWindow messages={messages} isLoading={isLoading} />
-      <ChatInput onSend={handleSend} isLoading={isLoading} />
+      <ChatInput
+        onSend={handleSend}
+        isLoading={isLoading}
+        placeholder={chatbotConfig.inputPlaceholder}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { Message } from "../types/Message";
 import chatbotConfig, {
+  catalogItems,
   formatPrice,
-  menuCatalog,
 } from "../config/chatbotConfig";
 
 const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
@@ -19,30 +19,34 @@ const injectionPatterns = [
   /mulai\s+sekarang/i,
 ];
 
-const menuTamperingPatterns = [
+const catalogTamperingPatterns = [
   /ubah(?:kan)?\s+harga/i,
   /ganti\s+harga/i,
   /naikkan\s+harga/i,
   /turunkan\s+harga/i,
-  /ubah(?:kan)?\s+menu/i,
-  /ganti\s+menu/i,
-  /hapus\s+menu/i,
-  /tambah(?:kan)?\s+menu/i,
+  /ubah(?:kan)?\s+katalog/i,
+  /ganti\s+katalog/i,
+  /hapus\s+katalog/i,
+  /tambah(?:kan)?\s+katalog/i,
+  /ubah(?:kan)?\s+buku/i,
+  /ganti\s+judul/i,
+  /hapus\s+judul/i,
+  /tambah(?:kan)?\s+judul/i,
   /beri(?:kan)?\s+diskon/i,
   /buat(?:kan)?\s+promo/i,
 ];
 
-function isProtectedMenuRequest(prompt: string): boolean {
-  return [...injectionPatterns, ...menuTamperingPatterns].some((pattern) =>
+function isProtectedCatalogRequest(prompt: string): boolean {
+  return [...injectionPatterns, ...catalogTamperingPatterns].some((pattern) =>
     pattern.test(prompt)
   );
 }
 
-function buildProtectedMenuReply(): string {
+function buildProtectedCatalogReply(): string {
   return (
-    "Maaf, saya tidak bisa mengubah daftar menu atau harga resmi ChefBot. " +
-    "Saya hanya bisa merekomendasikan menu yang tersedia. " +
-    "Coba beri budget atau preferensi makan Anda, ya."
+    "Maaf, saya tidak bisa mengubah katalog atau harga resmi Lentera. " +
+    "Saya hanya bisa merekomendasikan buku yang tersedia di katalog. " +
+    "Coba beri mood baca, genre, atau budget Anda, ya."
   );
 }
 
@@ -50,10 +54,10 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function normalizeMenuPrices(reply: string): string {
-  return menuCatalog.reduce((safeReply, item) => {
+function normalizeCatalogPrices(reply: string): string {
+  return catalogItems.reduce((safeReply, item) => {
     const pattern = new RegExp(
-      `(${escapeRegExp(item.name)}[^\\n]*?)Rp\\s*[0-9.]+`,
+      `(${escapeRegExp(item.title)}[^\\n]*?)Rp\\s*[0-9.]+`,
       "gi"
     );
 
@@ -62,6 +66,15 @@ function normalizeMenuPrices(reply: string): string {
       (_match, prefix: string) => `${prefix}${formatPrice(item.price)}`
     );
   }, reply);
+}
+
+function sanitizePlainText(reply: string): string {
+  return reply
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/^\s*[\*\+\-]\s+/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 export async function sendMessage(
@@ -74,8 +87,8 @@ export async function sendMessage(
     );
   }
 
-  if (isProtectedMenuRequest(prompt)) {
-    return buildProtectedMenuReply();
+  if (isProtectedCatalogRequest(prompt)) {
+    return buildProtectedCatalogReply();
   }
 
   const messages = [
@@ -114,5 +127,5 @@ export async function sendMessage(
     throw new Error("Respons Groq kosong.");
   }
 
-  return normalizeMenuPrices(reply);
+  return sanitizePlainText(normalizeCatalogPrices(reply));
 }
